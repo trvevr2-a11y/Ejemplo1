@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dani Julia Gomez — Portafolio, IA & Servidores</title>
+    <style>
+        /* --- VARIABLES DE DISEÑO (ESTILO APPLE) --- */
+        :root {
+            --bg-pure: #ffffff;
+            --bg-soft: #f5f5f7;
+            --bg-card: #fafafa;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --accent: #0071e3;
+            --border: #e8e8ed;
+            --bg-dark-section: #000000;
+            --text-dark-section: #f5f5f7;
+            /* Variables para el apartado azul cielo claro */
+            --bg-sky-section: #f0f7ff;
+            --bg-sky-card: rgba(255, 255, 255, 0.7);
+            --text-sky-main: #0c2340;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-pure);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- DEGRADADO NEGRO EN LOS BORDES --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.12);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- CABECERA SUPERIOR --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 90;
+        }
+
+        .nav-container {
+            max-width: 980px;
+            margin: 0 auto;
+            height: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .lang-selector {
+            display: flex;
+            gap: 12px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lang-btn.active, .lang-btn:hover {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* --- CONTENEDORES DE CONTENIDO --- */
+        .section-wrapper {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .hero {
+            padding: 180px 22px 80px 22px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            animation: fadeInUp 1s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+
+        .hero span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -0.005em;
+            line-height: 1.07;
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 21px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- GRID DE TARJETAS --- */
+        .grid-conceptos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 20px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 40px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 30px;
+            transition: background-color 0.4s, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s;
+        }
+
+        .card:hover {
+            background-color: var(--bg-pure);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-large {
+            grid-column: span 2;
+            background-color: var(--bg-soft);
+            border: none;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .card-text { flex: 1; }
+        .card h2 { font-size: 26px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.003em; }
+        .card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+
+        .card-image-wrapper {
+            flex: 1; width: 100%; height: 240px; border-radius: 14px; overflow: hidden;
+        }
+        .card-large .card-image-wrapper { height: 320px; }
+        .card-image-wrapper img {
+            width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: transform 0.6s;
+        }
+        .card:hover .card-image-wrapper img { transform: scale(1.04); filter: grayscale(0%); }
+
+        /* --- SECCIÓN SEPARADA 1: CÓMO FUNCIONA LA IA (DISEÑO PREMIUM OSCURO) --- */
+        .separated-section {
+            background-color: var(--bg-dark-section);
+            color: var(--text-dark-section);
+            padding: 120px 0;
+            border-radius: 40px;
+            margin: 40px 20px;
+        }
+        .separated-section .hero h1 { color: #ffffff; }
+        .separated-section .hero p { color: #a1a1a6; }
+        .separated-section .card { background-color: #1d1d1f; border: 1px solid #333336; }
+        .separated-section .card h2 { color: #ffffff; }
+        .separated-section .card p { color: #a1a1a6; }
+        .separated-section .card:hover { background-color: #2d2d30; }
+        .separated-section .card-large { background-color: #111112; }
+
+        /* --- SECCIÓN SEPARADA 2: TIPOS DE SERVIDORES (DISEÑO AZUL CIELO CLARO) --- */
+        .sky-section {
+            background-color: var(--bg-sky-section);
+            color: var(--text-sky-main);
+            padding: 120px 0;
+            border-radius: 40px;
+            margin: 40px 20px;
+        }
+        .sky-section .hero h1 { color: var(--text-sky-main); }
+        .sky-section .hero p { color: #4a5568; }
+        .sky-section .card { background-color: var(--bg-sky-card); border: 1px solid rgba(0, 113, 227, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .sky-section .card h2 { color: var(--text-sky-main); }
+        .sky-section .card p { color: #4a5568; }
+        .sky-section .card:hover { background-color: #ffffff; box-shadow: 0 20px 40px rgba(0, 113, 227, 0.05); }
+        .sky-section .card-large { background-color: rgba(255, 255, 255, 0.4); }
+
+        /* --- CONTACTO --- */
+        .cta-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 22px 140px 22px;
+            text-align: center;
+        }
+        .cta-section h2 { font-size: 40px; font-weight: 700; margin-bottom: 24px; }
+        
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--text-main);
+            color: var(--bg-pure);
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .cta-button:hover { background-color: #333336; transform: scale(1.02); }
+        .cta-button.secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+        }
+        .cta-button.secondary:hover { background-color: var(--bg-soft); }
+
+        /* --- MENÚ FLOTANTE --- */
+        .floating-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .floating-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--text-main);
+            color: var(--bg-pure);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .floating-btn:hover { transform: scale(1.05); }
+
+        .floating-menu {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 240px;
+            transform-origin: bottom right;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .floating-menu.show { display: flex; }
+
+        .floating-menu a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: background-color 0.2s;
+            font-weight: 500;
+        }
+        .floating-menu a:hover { background-color: rgba(0, 0, 0, 0.05); }
+        .floating-menu .menu-divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: 6px 0;
+        }
+
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid var(--border); background-color: var(--bg-soft); padding: 40px 22px; font-size: 12px; color: var(--text-muted); }
+        .footer-container { max-width: 980px; margin: 0 auto; display: flex; justify-content: space-between; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 40px; }
+            .grid-conceptos { grid-template-columns: 1fr; }
+            .card-large { grid-column: span 1; flex-direction: column; }
+            .cta-section h2 { font-size: 32px; }
+            .separated-section, .sky-section { margin: 20px 10px; border-radius: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">Dani Julia Gomez</div>
+            <div class="lang-selector">
+                <button class="lang-btn active" onclick="changeLanguage('es', event)">ES</button>
+                <button class="lang-btn" onclick="changeLanguage('en', event)">EN</button>
+                <button class="lang-btn" onclick="changeLanguage('ca', event)">CA</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="section-wrapper" id="portafolio">
+            <section class="hero">
+                <span id="txt-hero-sub">Perspectiva Estratégica</span>
+                <h1 id="txt-hero-title">Soluciones inteligentes para empresas avanzadas.</h1>
+                <p id="txt-hero-desc">Ayudo a marcas y negocios a integrar modelos de automatización y optimización de datos para liderar el mercado digital.</p>
+            </section>
+
+            <section class="grid-conceptos">
+                <div class="card">
+                    <div class="card-text">
+                        <h2 id="txt-c5-title">Optimización de Negocios</h2>
+                        <p id="txt-c5-desc">Desde predecir inventarios hasta automatizar tareas operativas complejas. La integración estratégica de modelos predictivos permite a las empresas reducir fricciones y tomar decisiones basadas en datos puros.</p>
+                    </div>
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=80" alt="Data networks">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-text">
+                        <h2 id="txt-c6-title">El Futuro del Trabajo</h2>
+                        <p id="txt-c6-desc">La IA no reemplaza profesionales; los redefine. La automatización se encarga de lo repetitivo, liberando tiempo humano para el diseño crítico, la creatividad estratégica y la empatía organizativa.</p>
+                    </div>
+                    <div class="card-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=500&q=80" alt="Workspace interface">
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="separated-section" id="como-funciona-ia">
+            <div class="section-wrapper">
+                <section class="hero">
+                    <span style="color: var(--accent);" id="txt-ia-sub">Módulo Educativo</span>
+                    <h1 id="txt-ia-title">¿Cómo funciona realmente la IA?</h1>
+                    <p id="txt-ia-desc">Una inmersión profunda pero conceptual en la arquitectura tecnológica que está transformando el mundo.</p>
+                </section>
+
+                <section class="grid-conceptos">
+                    <div class="card card-large">
+                        <div class="card-text">
+                            <h2 id="txt-c1-title">El núcleo: Aprendizaje Automático</h2>
+                            <p id="txt-c1-desc">A diferencia del software tradicional que sigue reglas fijas, la IA analiza millones de ejemplos para descubrir sus propios patrones. No le dices cómo es un gato; le muestras diez mil fotos hasta que entiende qué lo hace único.</p>
+                        </div>
+                        <div class="card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Patterns">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-text">
+                            <h2 id="txt-c2-title">1. Entrada de Datos</h2>
+                            <p id="txt-c2-desc">Cualquier estímulo (texto, píxeles o audio) se transforma en vectores numéricos. Para la máquina, el mundo real se traduce en una inmensa pero limpia matriz de números.</p>
+                        </div>
+                        <div class="card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80" alt="Minimal Light">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-text">
+                            <h2 id="txt-c3-title">2. Capas Ocultas</h2>
+                            <p id="txt-c3-desc">Las redes neuronales procesan los datos en niveles jerárquicos. Una capa inicial detecta bordes simples, la siguiente identifica formas complejas, y la última reconoce el objeto completo.</p>
+                        </div>
+                        <div class="card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=500&q=80" alt="Structure">
+                        </div>
+                    </div>
+
+                    <div class="card card-large">
+                        <div class="card-text">
+                            <h2 id="txt-c4-title">El modelo Transformer</h2>
+                            <p id="txt-c4-desc">La tecnología que impulsa las IA modernas se basa en el mecanismo de "atención". Esto permite al sistema conectar palabras o conceptos muy lejanos dentro de un mismo bloque de información, entendiendo el contexto global de una manera profundamente humana.</p>
+                        </div>
+                        <div class="card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=600&q=80" alt="Geometry">
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="sky-section" id="servidores-ia">
+            <div class="section-wrapper">
+                <section class="hero">
+                    <span style="color: var(--accent);" id="txt-srv-sub">Infraestructura Dedicada</span>
+                    <h1 id="txt-srv-title">Servidores optimizados para Inteligencia Artificial.</h1>
+                    <p id="txt-srv-desc">Los modelos avanzados requieren una potencia de cálculo masiva. Conoce las arquitecturas físicas encargadas de procesar los algoritmos de nueva generación.</p>
+                </section>
+
+                <section class="grid-conceptos">
+                    <div class="card">
+                        <div class="card-text">
+                            <h2 id="txt-srv-c1-title">Servidores Basados en GPU</h2>
+                            <p id="txt-srv-c1-desc">Las Unidades de Procesamiento Gráfico (GPU) son los motores del entrenamiento de IA. Su diseño paralelo les permite procesar miles de flujos de datos numéricos simultáneamente, reduciendo semanas de computación a solo unas horas.</p>
+                        </div>
+                        <div class="card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=500&q=80" alt="Hardware GPU">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-text">
+                            <h2 id="txt-srv-c2-title">Sistemas TPU y Chips ASIC</h2>
+                            <p id="txt-srv-c2-desc">Hardware diseñado con un único propósito: acelerar operaciones lógicas de IA. Las Unidades de Procesamiento de Tensores (TPU) optimizan al máximo el rendimiento por vatio, ideales para albergar redes neuronales hipermasivas en la nube.</p>
+                        </div>
+                        <div class="card-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80" alt="Microchip">
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="section-wrapper" id="contacto">
+            <section class="cta-section">
+                <h2 id="txt-cta-title">Espero poder trabajar contigo.</h2>
+                <div class="contact-links">
+                    <a href="mailto:danijuliagomez@gmail.com" class="cta-button">danijuliagomez@gmail.com</a>
+                    <a href="tel:+34686596967" class="cta-button secondary">686 59 69 67</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="floating-container">
+        <div class="floating-menu" id="fMenu">
+            <a href="#portafolio" onclick="toggleMenu()" id="menu-i1">Introducción</a>
+            <a href="#contacto" onclick="toggleMenu()" id="menu-i5">Contacto</a>
+            <div class="menu-divider"></div>
+            <a href="#como-funciona-ia" onclick="toggleMenu()" id="menu-i2" style="color: #666;">→ Cómo funciona la IA</a>
+            <a href="#servidores-ia" onclick="toggleMenu()" id="menu-i3" style="color: var(--accent); font-weight: 600;">→ Servidores para IA</a>
+        </div>
+        <button class="floating-btn" onclick="toggleMenu()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div id="txt-footer">Dani Julia Gomez — Soluciones Estratégicas en IA.</div>
+            <div>&copy; 2026 Dani Julia Gomez.</div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('fMenu').classList.toggle('show');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.floating-container')) {
+                var menu = document.getElementById('fMenu');
+                if (menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                }
+            }
+        }
+
+        const translations = {
+            es: {
+                heroSub: "Perspectiva Estratégica",
+                heroTitle: "Soluciones inteligentes para empresas avanzadas.",
+                heroDesc: "Ayudo a marcas y negocios a integrar modelos de automatización y optimización de datos para liderar el mercado digital.",
+                c5Title: "Optimización de Negocios",
+                c5Desc: "Desde predecir inventarios hasta automatizar tareas operativas complejas. La integración estratégica de modelos predictivos permite a las empresas reducir fricciones y tomar decisiones basadas en datos puros.",
+                c6Title: "El Futuro del Trabajo",
+                c6Desc: "La IA no reemplaza profesionales; los redefine. La automatización se encarga de lo repetitivo, liberando tiempo humano para el diseño crítico, la creatividad estratégica y la empatía organizativa.",
+                
+                iaSub: "Módulo Educativo",
+                iaTitle: "¿Cómo funciona realmente la IA?",
+                iaDesc: "Una inmersión profunda pero conceptual en la arquitectura tecnológica que está transformando el mundo.",
+                c1Title: "El núcleo: Aprendizaje Automático",
+                c1Desc: "A diferencia del software tradicional que sigue reglas fijas, la IA analiza millones de ejemplos para descubrir sus propios patrones. No le dices cómo es un gato; le muestras diez mil fotos hasta que entiende qué lo hace único.",
+                c2Title: "1. Entrada de Datos",
+                c2Desc: "Cualquier estímulo (texto, píxeles o audio) se transforma en vectores numéricos. Para la máquina, el mundo real se traduce en una inmensa pero limpia matriz de números.",
+                c3Title: "2. Capas Ocultas",
+                c3Desc: "Les redes neuronales procesan los datos en niveles jerárquicos. Una capa inicial detecta bordes simples, la siguiente identifica formas complejas, y la última reconoce el objeto completo.",
+                c4Title: "El modelo Transformer",
+                c4Desc: "La tecnología que impulsa las IA modernas se basa en el mecanismo de 'atención'. Esto permite al sistema conectar palabras o conceptos muy lejanos dentro de un mismo bloque de información, entendiendo el contexto global de una manera profundamente humana.",
+                
+                srvSub: "Infraestructura Dedicada",
+                srvTitle: "Servidores optimizados para Inteligencia Artificial.",
+                srvDesc: "Los modelos avanzados requieren una potencia de cálculo masiva. Conoce las arquitecturas físicas encargadas de procesar los algoritmos de nueva generación.",
+                srvC1Title: "Servidores Basados en GPU",
+                srvC1Desc: "Las Unidades de Procesamiento Gráfico (GPU) son los motores del entrenamiento de IA. Su diseño paralelo les permite procesar miles de flujos de datos numéricos simultáneamente, reduciendo semanas de computación a solo unas horas.",
+                srvC2Title: "Sistemas TPU y Chips ASIC",
+                srvC2Desc: "Hardware diseñado con un único propósito: acelerar operaciones lógicas de IA. Las Unidades de Procesamiento de Tensores (TPU) optimizan al máximo el rendimiento por vatio, ideales para albergar redes neuronales hipermasivas en la nube.",
+
+                ctaTitle: "Espero poder trabajar contigo.",
+                menu1: "Introducción", menu2: "→ Cómo funciona la IA", menu3: "→ Servidores para IA", menu5: "Contacto",
+                footer: "Dani Julia Gomez — Soluciones Estratégicas en IA."
+            },
+            en: {
+                heroSub: "Strategic Perspective",
+                heroTitle: "Smart solutions for advanced businesses.",
+                heroDesc: "I help brands and businesses integrate automation and data optimization models to lead the digital market.",
+                c5Title: "Business Optimization",
+                c5Desc: "From predicting inventory to automating complex operational tasks. Strategic integration of predictive models allows companies to reduce friction and make decisions based on pure data.",
+                c6Title: "The Future of Work",
+                c6Desc: "AI doesn't replace professionals; it redefines them. Automation handles repetitive tasks, freeing up human time for critical design, strategic creativity, and organizational empathy.",
+                
+                iaSub: "Educational Module",
+                iaTitle: "How does AI actually work?",
+                iaDesc: "A deep but conceptual dive into the technological architecture that is transforming the world.",
+                c1Title: "The Core: Machine Learning",
+                c1Desc: "Unlike traditional software that follows rigid rules, AI analyzes millions of examples to discover its own patterns. You don't tell it what a cat looks like; you show it ten thousand photos until it understands what makes it unique.",
+                c2Title: "1. Data Input",
+                c2Desc: "Any stimulus (text, pixels, or audio) is transformed into numerical vectors. For the machine, the real world translates into a vast but clean matrix of numbers.",
+                c3Title: "2. Hidden Layers",
+                c3Desc: "Neural networks process data through hierarchical levels. An initial layer detects simple edges, the next identifies complex shapes, and the last recognizes the complete object.",
+                c4Title: "The Transformer Model",
+                c4Desc: "The technology driving modern AI relies on the 'attention' mechanism. This allows the system to connect distant words or concepts within the same block of information, understanding global context in a deeply human way.",
+                
+                srvSub: "Dedicated Infrastructure",
+                srvTitle: "Optimized Servers for Artificial Intelligence.",
+                srvDesc: "Advanced models require massive computing power. Learn about the physical architectures responsible for processing next-generation algorithms.",
+                srvC1Title: "GPU-Based Servers",
+                srvC1Desc: "Graphics Processing Units (GPUs) are the engines of AI training. Their parallel design allows them to process thousands of numerical data streams simultaneously, reducing weeks of computing to just hours.",
+                srvC2Title: "TPU Systems and ASIC Chips",
+                srvC2Desc: "Hardware engineered with a single purpose: accelerating AI logic operations. Tensor Processing Units (TPUs) maximize performance per watt, ideal for hosting hyper-massive neural networks in the cloud.",
+
+                ctaTitle: "Looking forward to working with you.",
+                menu1: "Introduction", menu2: "→ How AI works", menu3: "→ AI Servers", menu5: "Contact",
+                footer: "Dani Julia Gomez — Strategic AI Solutions."
+            },
+            ca: {
+                heroSub: "Perspectiva Estratègica",
+                heroTitle: "Solucions intel·ligents per a empreses avançades.",
+                heroDesc: "Ajudo a marques i negocis a integrar models d'automatització i optimització de dades per liderar el mercat digital.",
+                c5Title: "Optimització de Negocis",
+                c5Desc: "Des de predir inventaris fins a automatitzar tasques operatives complexes. L'integració estratègica de models predictius permet a les empreses reduir friccions i prendre decisions basades en dades pures.",
+                c6Title: "El Futur del Treball",
+                c6Desc: "La IA no reemplaça professionals; els redefineix. L'automatització s'encarrega del que és repetitiu, alliberant temps humà per al disseny crític, la creativitat estratègica i l'empatia organitzativa.",
+                
+                iaSub: "Mòdul Educatiu",
+                iaTitle: "Com funciona realment la IA?",
+                iaDesc: "Una immersió profunda però conceptual en l'arquitectura tecnològica que està transformant el món.",
+                c1Title: "El nucli: Aprenentatge Automàtic",
+                c1Desc: "A diferència del programari tradicional que segueix regles fixes, la IA analitza milions d'exemples per descobrir els seus propis patrons. No li dius com és un gat; li mous deu mil fotos fins que entén què el fa únic.",
+                c2Title: "1. Entrada de Dades",
+                c2Desc: "Qualsevol estímul (text, píxeles o àudio) es transforma en vectors numèrics. Per a la màquina, el món real es tradueix en una immensa i neta matriu de números.",
+                c3Title: "2. Capas Ocultas",
+                c3Desc: "Les xarxes neuronals processen les dades en nivells jeràrquics. Una capa inicial detecta vores simples, la següent identifica formes complexes, i l'última reconeix l'objecte complet.",
+                c4Title: "El model Transformer",
+                c4Desc: "La tecnologia que impulsa les IA modernes es basa en el mecanisme d'atenció. Això permet al sistema connectar paraules o conceptes molt llunyans dins d'un mateix bloc d'informació, entenent el context global d'una manera profundament humana.",
+                
+                srvSub: "Infraestructura Dedicada",
+                srvTitle: "Servidors optimitzats per a Intel·ligència Artificial.",
+                srvDesc: "Els models avançats requereixen una potència de càlcul massiva. Coneix les arquitectures físiques encarregades de procesar els algorismes de nova generació.",
+                srvC1Title: "Servidors Basats en GPU",
+                srvC1Desc: "Les Unitats de Processament Gràfic (GPU) són els motors de l'entrenament de IA. El seu disseny paral·lel els permet processar milers de fluxos de dades numèriques simultàniament, reduint setmanes de computació a només unes hores.",
+                srvC2Title: "Sistemas TPU i Xips ASIC",
+                srvC2Desc: "Programari dissenyat amb un uniqu propòsit: accelerar operacions lògiques de IA. Les Unitats de Processament de Tensors (TPU) optimitzen al màxim el rendiment per watt, ideals per allotjar xarxes neuronals hipermassives al núvol.",
+
+                ctaTitle: "Espero poder treballar amb tu.",
+                menu1: "Introducció", menu2: "→ Com funciona la IA", menu3: "→ Servidors per a IA", menu5: "Contacte",
+                footer: "Dani Julia Gomez — Solucions Estratègiques en IA."
+            }
+        };
+
+        function changeLanguage(lang, event) {
+            document.getElementById('txt-hero-sub').innerText = translations[lang].heroSub;
+            document.getElementById('txt-hero-title').innerText = translations[lang].heroTitle;
+            document.getElementById('txt-hero-desc').innerText = translations[lang].heroDesc;
+            document.getElementById('txt-c5-title').innerText = translations[lang].c5Title;
+            document.getElementById('txt-c5-desc').innerText = translations[lang].c5Desc;
+            document.getElementById('txt-c6-title').innerText = translations[lang].c6Title;
+            document.getElementById('txt-c6-desc').innerText = translations[lang].c6Desc;
+            
+            document.getElementById('txt-ia-sub').innerText = translations[lang].iaSub;
+            document.getElementById('txt-ia-title').innerText = translations[lang].iaTitle;
+            document.getElementById('txt-ia-desc').innerText = translations[lang].iaDesc;
+            document.getElementById('txt-c1-title').innerText = translations[lang].c1Title;
+            document.getElementById('txt-c1-desc').innerText = translations[lang].c1Desc;
+            document.getElementById('txt-c2-title').innerText = translations[lang].c2Title;
+            document.getElementById('txt-c2-desc').innerText = translations[lang].c2Desc;
+            document.getElementById('txt-c3-title').innerText = translations[lang].c3Title;
+            document.getElementById('txt-c3-desc').innerText = translations[lang].c3Desc;
+            document.getElementById('txt-c4-title').innerText = translations[lang].c4Title;
+            document.getElementById('txt-c4-desc').innerText = translations[lang].c4Desc;
+
+            document.getElementById('txt-srv-sub').innerText = translations[lang].srvSub;
+            document.getElementById('txt-srv-title').innerText = translations[lang].srvTitle;
+            document.getElementById('txt-srv-desc').innerText = translations[lang].srvDesc;
+            document.getElementById('txt-srv-c1-title').innerText = translations[lang].srvC1Title;
+            document.getElementById('txt-srv-c1-desc').innerText = translations[lang].srvC1Desc;
+            document.getElementById('txt-srv-c2-title').innerText = translations[lang].srvC2Title;
+            document.getElementById('txt-srv-c2-desc').innerText = translations[lang].srvC2Desc;
+            
+            document.getElementById('txt-cta-title').innerText = translations[lang].ctaTitle;
+            
+            document.getElementById('menu-i1').innerText = translations[lang].menu1;
+            document.getElementById('menu-i2').innerText = translations[lang].menu2;
+            document.getElementById('menu-i3').innerText = translations[lang].menu3;
+            document.getElementById('menu-i5').innerText = translations[lang].menu5;
+            document.getElementById('txt-footer').innerText = translations[lang].footer;
+
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
